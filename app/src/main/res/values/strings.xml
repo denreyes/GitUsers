@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">GithubUsers</string>
+    <string name="search">Search..</string>
+	<string name="notes">Notes:</string>
+	<string name="save">Save</string>
+	<string name="write_something">Write something ..</string>
+	<string name="no_users_found">No users found</string>
+	<string name="note_added">Note added!</string>
+    <string name="connection_unavailable">Connection unavailable</string>
+</resources>
