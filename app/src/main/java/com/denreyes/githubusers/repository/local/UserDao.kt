@@ -11,7 +11,7 @@ interface UserDao {
 	@Query("SELECT * FROM userinfo WHERE id = :id")
 	fun getUser(id: Int?): UserEntity?
 
-	@Query("SELECT * FROM userinfo WHERE login LIKE :query")
+	@Query("SELECT * FROM userinfo WHERE login LIKE :query OR note LIKE :query")
 	fun searchUsers(query: String): List<UserEntity>?
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)

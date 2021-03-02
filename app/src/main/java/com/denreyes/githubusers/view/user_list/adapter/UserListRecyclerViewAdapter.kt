@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.denreyes.githubusers.R
 import com.denreyes.githubusers.repository.local.UserEntity
@@ -75,21 +76,27 @@ class UserListRecyclerViewAdapter(private val listener: UserListAdapterListener,
 			itemView.tv_details.text = data.type
 			itemView.iv_note.visibility = if (data.note.isNotEmpty()) View.VISIBLE else View.GONE
 
-			itemView.iv_profile.setImageResource(R.drawable.placeholder_octocat)
-			Glide.with(context)
-				.asBitmap()
-				.load(data.avatarUrl)
-				.into(object : CustomTarget<Bitmap>(){
-					override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
-						var res = resource
-						if ((position + 1) % 4 == 0)
-							res = listener.invertBitmap(resource)!!
-						itemView.iv_profile.setImageBitmap(res)
-					}
+			if ((position + 1) % 4 == 0) {
+				itemView.iv_profile.setImageResource(R.drawable.placeholder_octocat)
+				Glide.with(context)
+						.asBitmap()
+						.load(data.avatarUrl)
+						.into(object : CustomTarget<Bitmap>() {
+							override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
+								var res = listener.invertBitmap(resource)!!
+								itemView.iv_profile.setImageBitmap(res)
+							}
 
-					override fun onLoadCleared(placeholder: Drawable?) {
-					}
-				})
+							override fun onLoadCleared(placeholder: Drawable?) {
+							}
+						})
+			} else {
+				Glide.with(context)
+						.load(data.avatarUrl)
+						.placeholder(R.drawable.placeholder_octocat)
+						.error(R.drawable.placeholder_octocat)
+						.into(itemView.iv_profile )
+			}
 
 			itemView.setOnClickListener {
 				listener.onSelectUserListener(data)
